@@ -1,22 +1,20 @@
 <script>
-  // State
-  let factor = 0.2; // base JPEG quality (0..0.5)
-  let loopCount = 100; // iterations for auto-loop
-  let inImg; // <img> ref for input/original
-  let outImg; // <img> ref for output/processed
+  import { onMount } from 'svelte';
 
-  // Window state
+  let factor = 0.2;
+  let loopCount = 100;
+  let inImg;
+  let outImg;
+
   let windowEl;
-  let top = 20;
-  let left = 20;
+  let top;
+  let left;
   let isDragging = false;
   let dragOffsetX, dragOffsetY;
 
-  // Offscreen canvas
   const cvs = document.createElement('canvas');
   const ctx = cvs.getContext('2d', { willReadFrequently: true });
 
-  // Load from file input
   function handleFile(e) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -32,7 +30,6 @@
     };
   }
 
-  // Apply one round of JPEG compression
   function compressOnce() {
     if (!outImg?.src) return;
     const q = clamp(factor + Math.random() * 0.1, 0, 0.5);
@@ -42,13 +39,11 @@
     };
   }
 
-  // Loop compression N times
   function autoLoop() {
     const n = Number(loopCount) || 0;
     for (let i = 0; i < n; i++) compressOnce();
   }
 
-  // Reset output to original
   function resetImage() {
     if (!inImg?.src) return;
     outImg.src = inImg.src;
@@ -59,10 +54,16 @@
     };
   }
 
-  // Utilities
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
   }
+
+  onMount(() => {
+    if (windowEl) {
+      left = (window.innerWidth - windowEl.offsetWidth) / 2;
+      top = (window.innerHeight - windowEl.offsetHeight) / 2;
+    }
+  });
 
   function onMouseDown(event) {
     isDragging = true;
@@ -90,7 +91,7 @@
   <div
     class="window"
     bind:this={windowEl}
-    style="position: absolute; top: {top}px; left: {left}px; min-width: 550px; resize: both; overflow: auto;"
+    style="position: absolute; top: {top}px; left: {left}px; min-width: 550px; min-height: 480px; resize: both; overflow: hidden;"
   >
     <div class="title-bar" on:mousedown={onMouseDown} style="cursor: move;">
       <div class="title-bar-text">JPEG Artifact Generator</div>
@@ -102,24 +103,26 @@
     </div>
 
     <div class="window-body">
-      <div class="field-row">
-        <label for="file">Open image:</label>
-        <input id="file" type="file" accept="image/*" on:change={handleFile} />
-      </div>
+      <div class="controls">
+        <div class="field-row">
+          <label for="file">Open image:</label>
+          <input id="file" type="file" accept="image/*" on:change={handleFile} />
+        </div>
 
-      <div class="field-row">
-        <label for="factor">Base compression</label>
-        <input id="factor" type="range" min="0" max="0.5" step="0.01" bind:value={factor} />
-        <span class="value">{factor.toFixed(2)}</span>
-        <button class="button" on:click={compressOnce}>Create JPEG artifacts</button>
-      </div>
+        <div class="field-row">
+          <label for="factor">Base compression</label>
+          <input id="factor" type="range" min="0" max="0.5" step="0.01" bind:value={factor} />
+          <span class="value">{factor.toFixed(2)}</span>
+          <button class="button" on:click={compressOnce}>Create Artifacts</button>
+        </div>
 
-      <div class="field-row">
-        <label for="loop">Create artifacts</label>
-        <input id="loop" type="number" min="1" max="2000" step="1" bind:value={loopCount} style="width: 90px;" />
-        <span>times</span>
-        <button class="button" on:click={autoLoop}>Auto looper</button>
-        <button class="button reset-button" on:click={resetImage}>Reset image</button>
+        <div class="field-row">
+          <label for="loop">Create artifacts</label>
+          <input id="loop" type="number" min="1" max="2000" step="1" bind:value={loopCount} style="width: 90px;" />
+          <span>times</span>
+          <button class="button" on:click={autoLoop}>Auto looper</button>
+          <button class="button reset-button" on:click={resetImage}>Reset image</button>
+        </div>
       </div>
 
       <div class="images">
@@ -147,6 +150,15 @@
   }
   .window {
     font-size: 1.1em;
+    display: flex;
+    flex-direction: column;
+  }
+  .window-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    overflow-y: auto;
   }
   .field-row {
     display: flex;
@@ -158,15 +170,19 @@
     margin-left: auto;
   }
   .images {
+    flex-grow: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
     margin-top: 12px;
+    min-height: 150px;
   }
   .panel {
     border: 1px solid #000;
     padding: 8px;
     background: #fff;
+    display: flex;
+    flex-direction: column;
   }
   .panel-title {
     font-weight: bold;
@@ -174,8 +190,9 @@
   }
   img {
     max-width: 100%;
-    height: auto;
-    image-rendering: pixelated; /* enhances the crunchy vibe */
+    height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated;
     border: 1px solid #000;
     background: #c0c0c0;
   }
