@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import imageURL from './assets/lion.jpeg';
 
   let factor = 0.2;
   let loopCount = 100;
@@ -14,6 +15,22 @@
 
   const cvs = document.createElement('canvas');
   const ctx = cvs.getContext('2d', { willReadFrequently: true });
+
+  onMount(() => {
+    if (windowEl) {
+      left = (window.innerWidth - 550) / 2;
+      top = (window.innerHeight - 480) / 2;
+    }
+    if (inImg && outImg) {
+      inImg.src = imageURL;
+      outImg.src = imageURL;
+      outImg.onload = () => {
+        cvs.width = outImg.naturalWidth;
+        cvs.height = outImg.naturalHeight;
+        ctx.drawImage(outImg, 0, 0);
+      };
+    }
+  });
 
   function handleFile(e) {
     const file = e.target.files?.[0];
@@ -57,13 +74,6 @@
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
   }
-
-  onMount(() => {
-    if (windowEl) {
-      left = (window.innerWidth - windowEl.offsetWidth) / 2;
-      top = (window.innerHeight - windowEl.offsetHeight) / 2;
-    }
-  });
 
   function onMouseDown(event) {
     isDragging = true;
@@ -152,6 +162,8 @@
     font-size: 1.1em;
     display: flex;
     flex-direction: column;
+    width: 550px;
+    height: 480px;
   }
   .window-body {
     flex-grow: 1;
