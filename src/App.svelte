@@ -1,9 +1,16 @@
 <script>
   // State
-  let factor = 0.2;           // base JPEG quality (0..0.5)
-  let loopCount = 100;        // iterations for auto-loop
-  let inImg;                  // <img> ref for input/original
-  let outImg;                 // <img> ref for output/processed
+  let factor = 0.2; // base JPEG quality (0..0.5)
+  let loopCount = 100; // iterations for auto-loop
+  let inImg; // <img> ref for input/original
+  let outImg; // <img> ref for output/processed
+
+  // Window state
+  let windowEl;
+  let top = 20;
+  let left = 20;
+  let isDragging = false;
+  let dragOffsetX, dragOffsetY;
 
   // Offscreen canvas
   const cvs = document.createElement('canvas');
@@ -56,11 +63,36 @@
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
   }
+
+  function onMouseDown(event) {
+    isDragging = true;
+    const rect = windowEl.getBoundingClientRect();
+    dragOffsetX = event.clientX - rect.left;
+    dragOffsetY = event.clientY - rect.top;
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  }
+
+  function onMouseMove(event) {
+    if (!isDragging) return;
+    left = event.clientX - dragOffsetX;
+    top = event.clientY - dragOffsetY;
+  }
+
+  function onMouseUp() {
+    isDragging = false;
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('mouseup', onMouseUp);
+  }
 </script>
 
 <div class="app">
-  <div class="window" style="max-width: 900px;">
-    <div class="title-bar">
+  <div
+    class="window"
+    bind:this={windowEl}
+    style="position: absolute; top: {top}px; left: {left}px; min-width: 550px; resize: both; overflow: auto;"
+  >
+    <div class="title-bar" on:mousedown={onMouseDown} style="cursor: move;">
       <div class="title-bar-text">JPEG Artifact Generator</div>
       <div class="title-bar-controls">
         <button aria-label="Minimize"></button>
@@ -87,7 +119,7 @@
         <input id="loop" type="number" min="1" max="2000" step="1" bind:value={loopCount} style="width: 90px;" />
         <span>times</span>
         <button class="button" on:click={autoLoop}>Auto looper</button>
-        <button class="button" on:click={resetImage}>Reset image</button>
+        <button class="button reset-button" on:click={resetImage}>Reset image</button>
       </div>
 
       <div class="images">
@@ -113,10 +145,17 @@
   .app {
     padding: 16px;
   }
+  .window {
+    font-size: 1.1em;
+  }
   .field-row {
+    display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 8px;
+  }
+  .reset-button {
+    margin-left: auto;
   }
   .images {
     display: grid;
