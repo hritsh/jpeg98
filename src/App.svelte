@@ -155,7 +155,7 @@
     </div>
 
     <div class="window-body">
-      <div class="controls">
+      <fieldset class="controls">
         <div class="control-grid">
           <label for="file">Open image:</label>
           <input id="file" type="file" accept="image/*" on:change={handleFile} />
@@ -185,7 +185,7 @@
             </div>
           {/if}
         </div>
-      </div>
+      </fieldset>
 
       <div class="content">
         <div class="images">
@@ -199,10 +199,10 @@
           </div>
         </div>
 
-        <div class="bottom-controls">
-          <button class="button" on:click={resetImage}>Reset image</button>
-          <button class="button" on:click={downloadImage}>Download image</button>
-        </div>
+        <fieldset class="bottom-controls">
+          <button class="button" on:click={resetImage}>Reset</button>
+          <button class="button" on:click={downloadImage}>Download</button>
+        </fieldset>
 
         <div class="status-bar">
           <p class="status-bar-field">Tip: try low base quality and many loops for chunky artifacts.</p>
