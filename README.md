@@ -1,47 +1,82 @@
-# Svelte + TS + Vite
+<p align="center">
+  <img src="https://github.com/hritsh/jpeg98/blob/main/public/favicon.ico" width="32" height="32" alt="windows 98 icon" />
+</p>
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+<h1 align="center">windows 98 jpeg artifact generator</h1>
 
-## Recommended IDE Setup
+<p align="center">
+  <img src="./screenshots/demo.gif" alt="main demo" width="400"/>
+</p>
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+---
 
-## Need an official Svelte framework?
+## what is this?
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+have you ever wanted your images to look like they’ve been chilling on a myspace page since 2004 (yes YOU have), or even simulate an image thats been sent from an android to an iphone on sms?
+i wanted to deep fry some pics for my retro-style [portfolio](https://hritish.com), but every tool out there was either too clean or had too many steps to achieve this effect.  
+so i made this: a windows 98-style jpeg compressor that lets you absolutely destroy your images, right in your browser.
 
-## Technical considerations
+---
 
-**Why use this over SvelteKit?**
+## features
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+- drag & drop or open any image
+- **base compression** slider: lower it for more chunky blocks and jpeg chaos
+- **loop** slider: run the compression over and over for that “sent through 12 forums and 3 instant messengers” look
+- see input and output side by side
+- download your cursed creation
+- works on desktop and mobile
+- all processing is done locally on your browser
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+---
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+## screenshots
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+<p align="center">
+  <img src="./screenshots/web1.jpeg" width="320" alt="screenshot 1" />
+  <img src="./screenshots/web2.jpeg" width="320" alt="screenshot 2" />
+  <img src="./screenshots/mobile.jpeg" width="147" alt="mobile screenshot" />
+</p>
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+---
 
-**Why include `.vscode/extensions.json`?**
+## how to use
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+1. open an image (drag it in or use the file picker).
+2. play with the sliders:
+   - **base compression:** lower = more blocks, more chaos.
+   - **loop count:** more loops = more artifacting, more “what even is this anymore”.
+3. hit "run loop" and watch your image get deep fried in real time.
+4. download and enjoy your new masterpiece, ready for your next retro website or cursed meme.
 
-**Why enable `allowJs` in the TS template?**
+> **pro tip:**  
+> turn the quality all the way down and loop it for a while to straight up deep-fry your images
 
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
+---
 
-**Why is HMR not preserving my local component state?**
+## why?
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
+because there wasn’t a site that just did this, and i wanted one.
 
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
+---
 
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
-```
+## built with
+
+- [svelte](https://svelte.dev/) for the ui
+- [98.css](https://jdan.github.io/98.css/) for that sweet windows 98 look
+- 100% client-side, hosted on github pages
+
+---
+
+## license
+
+MIT
+
+---
+
+<p align="center">
+  <a href="https://github.com/hritsh/jpeg98" title="github repo">
+    <img src="https://github.com/hritsh/jpeg98/blob/main/public/favicon.ico" width="20" height="20" />
+    github.com/hritsh/jpeg98
+  </a>
+</p>
