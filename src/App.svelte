@@ -45,7 +45,6 @@
       const wasMobile = isMobile;
       isMobile = window.innerWidth <= 768;
       
-      // If switching from mobile to desktop, recenter the window
       if (wasMobile && !isMobile && windowEl) {
         left = (window.innerWidth - 550) / 2;
         top = (window.innerHeight - 480) / 2;
@@ -167,7 +166,9 @@
     style={isMobile ? '' : `position: absolute; top: ${top}px; left: ${left}px; min-width: 550px; min-height: 480px; resize: both; overflow: hidden;`}
   >
     <div class="title-bar" on:mousedown={onMouseDown} style={isMobile ? '' : 'cursor: move;'}>
-      <div class="title-bar-text">Windows 98 JPEG Artifact Generator</div>
+      <div class="title-bar-text">
+      <img src="./favicon.ico" alt="icon" class="titlebar-icon" />
+      Windows 98 JPEG Artifact Generator</div>
       <div class="title-bar-controls">
         <button aria-label="Minimize"></button>
         <button aria-label="Maximize"></button>
