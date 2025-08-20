@@ -5,7 +5,7 @@
 <h1 align="center">windows 98 jpeg artifact generator</h1>
 
 <p align="center">
-  <img src="./screenshots/demo.gif" alt="main demo" width="400"/>
+  <img src="./screenshots/demo.gif" alt="main demo" width="600"/>
 </p>
 
 ---
