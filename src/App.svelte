@@ -17,15 +17,19 @@
   let processProgress = 0;
   let processedCount = 0;
   let totalIterations = 0;
+  let isMobile = false;
 
   const cvs = document.createElement('canvas');
   const ctx = cvs.getContext('2d', { willReadFrequently: true });
 
   onMount(() => {
-    if (windowEl) {
+    isMobile = window.innerWidth <= 768;
+    
+    if (windowEl && !isMobile) {
       left = (window.innerWidth - 550) / 2;
       top = (window.innerHeight - 480) / 2;
     }
+    
     if (inImg && outImg) {
       inImg.src = imageURL;
       outImg.src = imageURL;
@@ -35,6 +39,21 @@
         ctx.drawImage(outImg, 0, 0);
       };
     }
+
+    // Listen for resize events
+    const handleResize = () => {
+      const wasMobile = isMobile;
+      isMobile = window.innerWidth <= 768;
+      
+      // If switching from mobile to desktop, recenter the window
+      if (wasMobile && !isMobile && windowEl) {
+        left = (window.innerWidth - 550) / 2;
+        top = (window.innerHeight - 480) / 2;
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   });
 
   function handleFile(e) {
@@ -118,6 +137,7 @@
   }
 
   function onMouseDown(event) {
+    if (isMobile) return; // Disable dragging on mobile
     isDragging = true;
     const rect = windowEl.getBoundingClientRect();
     dragOffsetX = event.clientX - rect.left;
@@ -142,11 +162,12 @@
 <div class="app">
   <div
     class="window"
+    class:mobile={isMobile}
     bind:this={windowEl}
-    style="position: absolute; top: {top}px; left: {left}px; min-width: 550px; min-height: 480px; resize: both; overflow: hidden;"
+    style={isMobile ? '' : `position: absolute; top: ${top}px; left: ${left}px; min-width: 550px; min-height: 480px; resize: both; overflow: hidden;`}
   >
-    <div class="title-bar" on:mousedown={onMouseDown} style="cursor: move;">
-      <div class="title-bar-text">JPEG Artifact Generator</div>
+    <div class="title-bar" on:mousedown={onMouseDown} style={isMobile ? '' : 'cursor: move;'}>
+      <div class="title-bar-text">Windows 98 JPEG Artifact Generator</div>
       <div class="title-bar-controls">
         <button aria-label="Minimize"></button>
         <button aria-label="Maximize"></button>
@@ -200,8 +221,8 @@
         </div>
 
         <fieldset class="bottom-controls">
-          <button class="button" on:click={resetImage}>Reset</button>
-          <button class="button" on:click={downloadImage}>Download</button>
+          <button class="button default" on:click={resetImage}>Reset</button>
+          <button class="button default" on:click={downloadImage}>Download</button>
         </fieldset>
 
         <div class="status-bar">
@@ -209,6 +230,18 @@
           <p class="status-bar-field">Image is processed locally in your browser.</p>
         </div>
       </div>
+      <a
+        class="watermark"
+        href="https://github.com/hritsh"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="GitHub: hritsh"
+      >
+        <svg class="github-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <polygon points="23 9 23 15 22 15 22 17 21 17 21 19 20 19 20 20 19 20 19 21 18 21 18 22 16 22 16 23 15 23 15 18 14 18 14 17 15 17 15 16 17 16 17 15 18 15 18 14 19 14 19 9 18 9 18 6 16 6 16 7 15 7 15 8 14 8 14 7 10 7 10 8 9 8 9 7 8 7 8 6 6 6 6 9 5 9 5 14 6 14 6 15 7 15 7 16 9 16 9 18 7 18 7 17 6 17 6 16 4 16 4 17 5 17 5 19 6 19 6 20 9 20 9 23 8 23 8 22 6 22 6 21 5 21 5 20 4 20 4 19 3 19 3 17 2 17 2 15 1 15 1 9 2 9 2 7 3 7 3 5 4 5 4 4 5 4 5 3 7 3 7 2 9 2 9 1 15 1 15 2 17 2 17 3 19 3 19 4 20 4 20 5 21 5 21 7 22 7 22 9 23 9"/>
+        </svg>
+        <span>github.com/hritsh</span>
+      </a>
     </div>
   </div>
 </div>

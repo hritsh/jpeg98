@@ -18,6 +18,17 @@ body {
   height: 480px;
 }
 
+.window.mobile {
+  position: static !important;
+  width: 100% !important;
+  max-width: 100vw;
+  height: auto !important;
+  min-height: 100vh;
+  resize: none !important;
+  margin: 0;
+  overflow: visible !important;
+}
+
 .window-body {
   flex-grow: 1;
   display: flex;
@@ -36,6 +47,58 @@ body {
   grid-template-columns: auto 1fr auto;
   gap: 8px;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 0;
+  }
+
+  .window {
+    font-size: 1em;
+  }
+
+  .control-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .control-group {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  label {
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .images {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .value {
+    min-width: auto;
+    font-weight: bold;
+  }
+
+  .bottom-controls {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .status-bar {
+    text-align: center;
+  }
+
+  .status-bar .status-bar-field {
+    margin: 4px 0;
+    font-size: 0.9em;
+  }
 }
 
 .control-group {
@@ -108,4 +171,52 @@ img {
 label {
   text-align: right;
   font-weight: normal;
+}
+
+.watermark {
+  position: fixed;
+  right: 10px;
+  bottom: 8px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85em;
+  color: #222;
+  background: #e0e0e0;
+  border: 1px solid #fff;
+  border-bottom-color: #888;
+  border-right-color: #888;
+  padding: 2px 8px 2px 4px;
+  border-radius: 3px 0 0 0;
+  opacity: 0.85;
+  box-shadow: 1px 1px 0 #aaa;
+  text-decoration: none;
+  font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Arial, sans-serif;
+  pointer-events: auto;
+  transition: opacity 0.2s;
+}
+
+.watermark:hover {
+  opacity: 1;
+  color: #0057b7;
+  background: #fff;
+  border-color: #888 #888 #fff #fff;
+}
+
+.github-icon {
+  display: inline-block;
+  vertical-align: middle;
+  color: #222;
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 768px) {
+  .watermark {
+    font-size: 0.75em;
+    right: 2px;
+    bottom: 2px;
+    padding: 2px 4px 2px 2px;
+  }
 }
