@@ -104,6 +104,15 @@
     };
   }
 
+  function downloadImage() {
+    if (!outImg?.src) return;
+    
+    const link = document.createElement('a');
+    link.download = 'jpeg-artifacts.jpg';
+    link.href = outImg.src;
+    link.click();
+  }
+
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
   }
@@ -147,37 +156,35 @@
 
     <div class="window-body">
       <div class="controls">
-        <div class="field-row">
+        <div class="control-grid">
           <label for="file">Open image:</label>
           <input id="file" type="file" accept="image/*" on:change={handleFile} />
-        </div>
-
-        <div class="field-row">
-          <label for="factor">Base compression</label>
+          <div></div>
+          
+          <label for="factor">Base compression:</label>
           <input id="factor" type="range" min="0" max="0.5" step="0.01" bind:value={factor} />
-          <span class="value">{factor.toFixed(2)}</span>
-          <button class="button" on:click={compressOnce}>Create Artifacts</button>
-        </div>
-
-        <div class="field-row">
-          <label for="loop">Create artifacts</label>
-          <input id="loop" type="number" min="1" max="2000" step="1" bind:value={loopCount} style="width: 90px;" />
-          <span>times</span>
-          <button class="button default" on:click={autoLoop} disabled={isProcessing}>
-            {isProcessing ? 'Processing...' : 'Auto looper'}
-          </button>
-          <button class="button reset-button" on:click={resetImage}>Reset image</button>
-        </div>
-
-        {#if isProcessing}
-          <div class="field-row progress-row">
-            <label>Progress:</label>
-            <div class="progress-container">
-              <div class="progress-bar" style="width: {processProgress}%"></div>
-            </div>
-            <span class="progress-text">{processedCount}/{totalIterations}</span>
+          <div class="control-group">
+            <span class="value">{factor.toFixed(2)}</span>
+            <button class="button" on:click={compressOnce}>Run Once</button>
           </div>
-        {/if}
+          
+          <label for="loop">Create artifacts:</label>
+          {#if isProcessing}
+            <div class="progress-indicator segmented" style="height: 18px; min-width: 120px;">
+              <span class="progress-indicator-bar" style="width: {processProgress}%;"></span>
+            </div>
+            <div class="control-group">
+              <span class="progress-text">{processedCount}/{totalIterations}</span>
+              <button class="button" disabled>Processing...</button>
+            </div>
+          {:else}
+            <input id="loop" type="range" min="1" max="2000" step="1" bind:value={loopCount} />
+            <div class="control-group">
+              <span class="value">{loopCount} times</span>
+              <button class="button" on:click={autoLoop}>Run Loop</button>
+            </div>
+          {/if}
+        </div>
       </div>
 
       <div class="content">
@@ -190,6 +197,11 @@
             <div class="panel-title">Output</div>
             <img bind:this={outImg} alt="output" />
           </div>
+        </div>
+
+        <div class="bottom-controls">
+          <button class="button" on:click={resetImage}>Reset image</button>
+          <button class="button" on:click={downloadImage}>Download image</button>
         </div>
 
         <div class="status-bar">
@@ -221,6 +233,18 @@
   }
   .controls {
     flex-shrink: 0;
+    margin-bottom: 8px;
+  }
+  .control-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   .content {
     flex-grow: 1;
@@ -288,12 +312,22 @@
     min-height: 0;
   }
   .value {
-    width: 40px;
-    text-align: right;
-    display: inline-block;
+    min-width: 80px;
+    text-align: left;
+    font-size: 1em;
+  }
+  .bottom-controls {
+    flex-shrink: 0;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
   .status-bar {
     flex-shrink: 0;
-    margin-top: 8px;
+  }
+  label {
+    text-align: right;
+    font-weight: normal;
   }
 </style>
