@@ -1,17 +1,144 @@
 @import "98.css";
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 100vw;
-  min-height: 100vh;
   background-color: #008080;
 }
 
-#app {
-  max-width: 1280px;
+.app {
   margin: 0 auto;
-  padding: 2rem;
+  padding: 16px;
   text-align: center;
+}
+
+.window {
+  font-size: 1.1em;
+  display: flex;
+  flex-direction: column;
+  width: 550px;
+  height: 480px;
+}
+
+.window-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.controls {
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.progress-row {
+  margin-bottom: 12px;
+}
+
+.reset-button {
+  margin-left: auto;
+}
+
+.progress-container {
+  flex-grow: 1;
+  height: 16px;
+  background: #c0c0c0;
+  border: 2px inset #c0c0c0;
+  position: relative;
+  min-width: 120px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #0080ff 0%, #004080 100%);
+  transition: width 0.1s ease;
+}
+
+.progress-text {
+  font-size: 0.9em;
+  min-width: 60px;
+  text-align: center;
+}
+
+.images {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  min-height: 0;
+}
+
+.panel {
+  border: 1px solid #000;
+  padding: 8px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panel-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+
+img {
+  max-width: 100%;
+  flex-grow: 1;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border: 1px solid #000;
+  background: #c0c0c0;
+  min-height: 0;
+}
+
+.value {
+  min-width: 80px;
+  text-align: left;
+  font-size: 1em;
+}
+
+.bottom-controls {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.status-bar {
+  flex-shrink: 0;
+}
+
+label {
+  text-align: right;
+  font-weight: normal;
 }
